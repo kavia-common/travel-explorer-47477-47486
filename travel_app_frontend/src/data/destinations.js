@@ -60,23 +60,39 @@ export const stubDestinations = [
   },
 ]
 
-// PUBLIC_INTERFACE
+/**
+ * PUBLIC_INTERFACE
+ * Fetch destinations from API when VITE_API_BASE is provided; otherwise return stubs.
+ * Never block rendering—callers should set stub data before awaiting this function.
+ */
 export async function fetchDestinations() {
-  /** This uses Vite env variables at build time. */
   const apiBase = import.meta?.env?.VITE_API_BASE
-  if (apiBase && typeof apiBase === 'string' && apiBase.trim().length > 0) {
-    try {
-      const res = await fetch(`${apiBase.replace(/\/$/, '')}/destinations`, {
-        headers: { Accept: 'application/json' },
-      })
-      if (!res.ok) throw new Error('Network response not ok')
-      const data = await res.json()
-      // Expect data in [{id,title,location,blurb,image,cta}] shape
-      if (Array.isArray(data) && data.length) return data
-    } catch (e) {
-      // Fall back to stub on failure
+  const hasApi =
+    typeof apiBase === 'string' && apiBase.trim().length > 0
+
+  if (!hasApi) {
+    console.info('[data] VITE_API_BASE not set; using stub destinations')
+    return stubDestinations
+  }
+
+  try {
+    const base = apiBase.replace(/\/$/, '')
+    const res = await fetch(`${base}/destinations`, {
+      headers: { Accept: 'application/json' },
+    })
+    if (!res.ok) {
+      console.warn('[data] Non-OK response, using stubs. Status:', res.status)
       return stubDestinations
     }
+    const data = await res.json()
+    if (Array.isArray(data)) {
+      console.info('[data] fetched destinations:', data.length)
+      return data.length ? data : stubDestinations
+    }
+    console.warn('[data] unexpected payload; using stubs')
+    return stubDestinations
+  } catch (e) {
+    console.warn('[data] fetch failed; using stubs:', e?.message || e)
+    return stubDestinations
   }
-  return stubDestinations
 }

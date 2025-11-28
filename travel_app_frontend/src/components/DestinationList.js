@@ -35,13 +35,19 @@ export default Blits.Component('DestinationList', {
       <Element ref="scroll" :y.transition="$offsetY" :alpha="$items && $items.length ? 1 : 0" w="1750" h="680">
         <Element
           :for="(item, index) in $items"
-          :key="$item.id"
           :is="DestinationCard"
           :item="$item"
           :onSelect="$onSelect"
           :x="$calcX($index)"
           :y="$calcY($index)"
         />
+      </Element>
+
+      <!-- Minimal static trio to validate rendering even if loops are unsupported in runtime -->
+      <Element :alpha="$items && $items.length ? 0 : 1">
+        <DestinationCard :item="{ id:'st1', title:'Welcome Coast', location:'Demo', blurb:'Starter card 1', image:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=800&h=600&fit=crop&auto=format', cta:'Explore' }" :x="0" :y="0" />
+        <DestinationCard :item="{ id:'st2', title:'Aurora Ridge', location:'Demo', blurb:'Starter card 2', image:'https://images.unsplash.com/photo-1545569341-9eb8b30979d0?q=80&w=800&h=600&fit=crop&auto=format', cta:'Explore' }" :x="560" :y="0" />
+        <DestinationCard :item="{ id:'st3', title:'Citrus Valley', location:'Demo', blurb:'Starter card 3', image:'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=800&h=600&fit=crop&auto=format', cta:'Explore' }" :x="1120" :y="0" />
       </Element>
       <!-- Scrollbar rail -->
       <Element x="1800" y="0" w="8" h="680" color="#E5E7EB" :alpha="$showScrollbar && $items && $items.length ? 0.6 : 0"/>

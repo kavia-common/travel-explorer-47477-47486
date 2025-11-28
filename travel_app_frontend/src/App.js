@@ -18,7 +18,7 @@ export default Blits.Application({
       </Element>
     </Element>
   `,
-  // Temporarily bypass routing to ensure UI renders immediately
+  // Keep routing disabled for now; we mount Home directly to avoid any async route guards
   routes: [],
   components: { Home },
 })
