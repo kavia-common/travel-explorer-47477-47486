@@ -32,7 +32,7 @@ export default Blits.Component('DestinationList', {
       </Element>
 
       <!-- Scroll container -->
-      <Element ref="scroll" :y.transition="$offsetY" :alpha="$items && $items.length ? 1 : 0">
+      <Element ref="scroll" :y.transition="$offsetY" :alpha="$items && $items.length ? 1 : 0" w="1750" h="680">
         <Element
           :for="(item, index) in $items"
           :key="$item.id"

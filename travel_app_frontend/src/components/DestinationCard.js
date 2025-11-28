@@ -14,7 +14,7 @@ export default Blits.Component('DestinationCard', {
       <Element :w="$cardW" :h="$cardH" :color="$bgColor" />
 
       <!-- Image -->
-      <Element :src="$item.image" x="0" y="0" :w="$cardW" h="220" :effects="[$shader('radius',{radius: 16})]" />
+      <Element :src="$item.image" x="0" y="0" :w="$cardW" h="220" />
 
       <!-- Title -->
       <Element x="20" y="236">
