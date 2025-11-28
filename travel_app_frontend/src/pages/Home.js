@@ -11,7 +11,7 @@ export default Blits.Component('Home', {
     <Element w="1920" h="1080" :color="$background">
       <!-- Top Nav -->
       <Element x="0" y="0" w="1920" h="96" :effects="[$shader('shadow',{color: 'rgba(0,0,0,0.12)', blur: 18, spread: 2})]">
-        <NavBar />
+        <NavBar ref="nav" />
       </Element>
 
       <!-- Hero/Header -->
@@ -29,12 +29,21 @@ export default Blits.Component('Home', {
     return {
       background: Theme.colors.background,
       destinations: [],
+      isLoading: true,
     }
   },
   hooks: {
     async ready() {
-      const data = await fetchDestinations()
-      this.destinations = data
+      try {
+        this.$refs.nav?.setLoadingText('Loading destinations…')
+        const data = await fetchDestinations()
+        this.destinations = Array.isArray(data) ? data : []
+      } catch (e) {
+        this.destinations = []
+      } finally {
+        this.isLoading = false
+        this.$refs.nav?.setLoadingText('')
+      }
     },
   },
 })

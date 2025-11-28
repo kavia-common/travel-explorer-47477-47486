@@ -11,22 +11,28 @@ export default Blits.Component('DestinationList', {
   props: ['items'],
   template: `
     <Element x="48" y="0" w="1824" h="680">
+      <!-- Empty state placeholder -->
+      <Element :alpha="$items && $items.length ? 0 : 1">
+        <Text x="0" y="8" size="28" color="#6B7280" content="No destinations available yet." />
+        <Text x="0" y="48" size="24" color="#9CA3AF" content="Please check your connection or try again." />
+      </Element>
+
       <!-- Scroll container -->
-      <Element ref="scroll" :y.transition="$offsetY">
+      <Element ref="scroll" :y.transition="$offsetY" :alpha="$items && $items.length ? 1 : 0">
         <Element
-          :for="(d, i) in $items"
-          :key="$d.id"
+          :for="(item, index) in $items"
+          :key="$item.id"
           :is="DestinationCard"
-          :item="$d"
+          :item="$item"
           :onSelect="$onSelect"
-          :x="$calcX($i)"
-          :y="$calcY($i)"
+          :x="$calcX($index)"
+          :y="$calcY($index)"
         />
       </Element>
       <!-- Scrollbar rail -->
-      <Element x="1800" y="0" w="8" h="680" color="#E5E7EB" :alpha="$showScrollbar ? 0.6 : 0"/>
+      <Element x="1800" y="0" w="8" h="680" color="#E5E7EB" :alpha="$showScrollbar && $items && $items.length ? 0.6 : 0"/>
       <!-- Scrollbar thumb -->
-      <Element :y.transition="$thumbY" x="1800" w="8" :h="$thumbH" :color="$accentColor" :alpha="$showScrollbar ? 0.9 : 0"/>
+      <Element :y.transition="$thumbY" x="1800" w="8" :h="$thumbH" :color="$accentColor" :alpha="$showScrollbar && $items && $items.length ? 0.9 : 0"/>
     </Element>
   `,
   state() {
