@@ -17,6 +17,20 @@ export default Blits.Component('DestinationList', {
         <Text x="0" y="48" size="24" color="#9CA3AF" content="Please check your connection or try again." />
       </Element>
 
+      <!-- When empty, render one static debug card to validate pipeline -->
+      <Element :alpha="$items && $items.length ? 0 : 1" y="96">
+        <DestinationCard
+          :item="{
+            id: 'debug',
+            title: 'Sample Place',
+            location: 'Somewhere',
+            blurb: 'Debug card renders while data loads.',
+            image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=800&h=600&fit=crop&auto=format',
+            cta: 'Explore'
+          }"
+        />
+      </Element>
+
       <!-- Scroll container -->
       <Element ref="scroll" :y.transition="$offsetY" :alpha="$items && $items.length ? 1 : 0">
         <Element

@@ -45,9 +45,11 @@ export default Blits.Component('Home', {
         }
         const data = await fetchDestinations()
         this.destinations = Array.isArray(data) ? data : []
+        console.log('[Home] destinations loaded:', this.destinations.length)
       } catch (e) {
         this.$log && this.$log.warn && this.$log.warn('Failed to load destinations', e?.message || e)
         this.destinations = []
+        console.warn('[Home] destinations fallback used, count:', this.destinations.length)
       } finally {
         this.isLoading = false
         if (this.$refs?.nav?.setLoadingText) {
