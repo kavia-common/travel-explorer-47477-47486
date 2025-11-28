@@ -50,12 +50,12 @@ export default Blits.Component('DestinationList', {
   },
   hooks: {
     ready() {
-      // compute max scroll based on items
-      const rows = Math.ceil((this.items || []).length / this.cols)
-      const visibleRows = Math.floor(680 / this.rowH)
-      const extra = Math.max(0, rows - visibleRows)
-      this.maxOffset = -extra * this.rowH
-      this.updateThumb()
+      this.recomputeScroll()
+    },
+    updated(prev) {
+      if (prev.items !== this.items) {
+        this.recomputeScroll()
+      }
     },
   },
   methods: {
@@ -73,6 +73,18 @@ export default Blits.Component('DestinationList', {
       this.thumbH = Math.max(60, 680 * ratio)
       const progress = Math.abs(this.offsetY) / Math.max(1, Math.abs(this.maxOffset))
       this.thumbY = (680 - this.thumbH) * progress
+    },
+    // PUBLIC_INTERFACE
+    recomputeScroll() {
+      /** Recompute scroll constraints after items change or layout adjustments */
+      const rows = Math.ceil((this.items || []).length / this.cols)
+      const visibleRows = Math.floor(680 / this.rowH)
+      const extra = Math.max(0, rows - visibleRows)
+      this.maxOffset = -extra * this.rowH
+      // Clamp offset within range
+      if (this.offsetY < this.maxOffset) this.offsetY = this.maxOffset
+      if (this.offsetY > 0) this.offsetY = 0
+      this.updateThumb()
     },
     // PUBLIC_INTERFACE
     $onSelect(item) {

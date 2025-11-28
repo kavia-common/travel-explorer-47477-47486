@@ -5,7 +5,7 @@ export default Blits.Component('Hero', {
   template: `
     <Element w="1920" h="220">
       <!-- Subtle gradient bar -->
-      <Element x="48" y="24" w="1824" h="172" :color="$heroBg" :effects="[$shader('radius',{radius: 16})]">
+      <Element x="48" y="16" w="1824" h="188" :color="$heroBg" :effects="[$shader('radius',{radius: 16})]">
         <Element x="24" y="24">
           <Text size="36" :color="$subtitleColor" content="Discover your next destination" />
           <Text y="56" size="64" :color="$titleColor" content="Find places to love and explore" />
